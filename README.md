@@ -11,6 +11,10 @@ A web application for conducting advanced research using artificial intelligence
 - Real-time research progress logging system
 - Responsive design for various devices
 
+## Screenshot
+
+![Deep Research Chat Interface](docs/images/app-screenshot.png)
+
 ## Technical Requirements
 
 - Node.js 18+
