@@ -1,0 +1,117 @@
+// Typy
+export type ResearchProgressEvent = {
+  type: 'info' | 'error' | 'success';
+  message: string;
+  data?: any;
+  timestamp: string;
+};
+
+// Konfiguracja Socket.IO
+import { io } from 'socket.io-client';
+
+// Inicjalizacja połączenia
+export const socket = io('http://localhost:3000/research-progress', {
+  transports: ['websocket'],
+  autoConnect: true
+});
+
+// Przykład użycia:
+socket.on('progress', (event: ResearchProgressEvent) => {
+  console.log(`[${event.type}] ${event.message}`);
+  if (event.data) {
+    console.log('Data:', event.data);
+  }
+});
+
+// Przykładowe zdarzenia, które otrzymasz z serwera:
+
+/*
+1. Rozpoczęcie badania:
+{
+  type: 'info',
+  message: 'Rozpoczynanie badania na głębokości 3...',
+  data: {
+    query: 'twoje zapytanie',
+    currentLearnings: 5
+  },
+  timestamp: '2024-03-21T12:34:56.789Z'
+}
+
+2. Postęp badania:
+{
+  type: 'info',
+  message: 'Wygenerowano zapytania SERP',
+  data: {
+    count: 3,
+    queries: [
+      {
+        query: 'przykładowe zapytanie',
+        goal: 'cel badawczy'
+      }
+    ]
+  },
+  timestamp: '2024-03-21T12:34:57.789Z'
+}
+
+3. Błąd:
+{
+  type: 'error',
+  message: 'Błąd podczas przetwarzania zapytania',
+  data: { 
+    error: 'szczegóły błędu' 
+  },
+  timestamp: '2024-03-21T12:34:58.789Z'
+}
+
+4. Sukces:
+{
+  type: 'success',
+  message: 'Badanie zakończone pomyślnie!',
+  data: {
+    totalLearnings: 15,
+    totalUrls: 8
+  },
+  timestamp: '2024-03-21T12:34:59.789Z'
+}
+*/
+
+// Wymagane zależności (dodaj do package.json):
+// "socket.io-client": "^4.8.1",
+// "@types/socket.io-client": "^3.0.0"
+
+// Instalacja:
+// npm install socket.io-client @types/socket.io-client
+
+// Przykład użycia w komponencie React:
+/*
+import { useEffect } from 'react';
+import { socket, ResearchProgressEvent } from './lib/socket.config';
+
+function YourComponent() {
+  useEffect(() => {
+    // Nasłuchiwanie na zdarzenia
+    socket.on('progress', (event: ResearchProgressEvent) => {
+      switch (event.type) {
+        case 'info':
+          console.log('Info:', event.message);
+          break;
+        case 'error':
+          console.error('Error:', event.message);
+          break;
+        case 'success':
+          console.log('Success:', event.message);
+          break;
+      }
+    });
+
+    // Sprzątanie przy odmontowaniu komponentu
+    return () => {
+      socket.off('progress');
+    };
+  }, []);
+
+  return (
+    // Twój komponent
+  );
+}
+*/ 
